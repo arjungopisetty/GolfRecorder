@@ -31,7 +31,7 @@ public class InitialPanel extends JPanel {
 
 	private static final long serialVersionUID = -1928211068606112484L;
 
-	private JButton newTableButton, openTableButton;
+	private JButton newTableButton, openTableButton, ticTacToeButton;
 	private JLabel welcomeLabel;
 	private GolfFrame golfFrameObj;
 	private JFileChooser fileBrowser;
@@ -62,6 +62,14 @@ public class InitialPanel extends JPanel {
 		openTableButton.setActionCommand("open table");
 		openTableButton.addActionListener(new ButtonHandler());
 		openTableButton.setBounds(width / 2 - 150, height / 2 + height / 25, 300, 75);
+		
+		ticTacToeButton = new JButton();
+		ticTacToeButton.setActionCommand("tic tac toe");
+		ticTacToeButton.setOpaque(false);
+		ticTacToeButton.setContentAreaFilled(false);
+		ticTacToeButton.setBorderPainted(false);
+		ticTacToeButton.addActionListener(new ButtonHandler());
+		ticTacToeButton.setBounds(width / 2 - 150, 2 * (height / 3), 300, 75);
 
 		Color c = new Color(64, 70, 121);
 		welcomeLabel = new JLabel("Golf Recorder", JLabel.CENTER);
@@ -78,6 +86,7 @@ public class InitialPanel extends JPanel {
 		add(welcomeLabel);
 		add(newTableButton);
 		add(openTableButton);
+		add(ticTacToeButton);
 		
 		
 		background = new ImageIcon("Background2.jpg").getImage();
@@ -116,6 +125,9 @@ public class InitialPanel extends JPanel {
 				if (namePath != null) {
 					golfFrameObj.loadScene(namePath.getPath());
 				}
+			} else if (e.getActionCommand().equals("tic tac toe")) {
+				System.out.println("Tic Tac Toe");
+				golfFrameObj.changeScene("TicTacToePanel");
 			}
 		}
 	}

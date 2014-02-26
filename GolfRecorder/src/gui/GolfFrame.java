@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import therealgame.TicTacToePanel;
+
 public class GolfFrame extends JFrame {
 	
 	private static final long serialVersionUID = 5714125822315122310L;
@@ -22,6 +24,7 @@ public class GolfFrame extends JFrame {
 	private JPanel mainPanel;
 	private TablePanel btp;
 	private TopPanel tp;
+	private TicTacToePanel tttp;
 	
 	/**
 	 * Constructs a default GolfFrame.
@@ -47,7 +50,9 @@ public class GolfFrame extends JFrame {
 		
 		btp = new TablePanel();
 		tp = new TopPanel(btp, this);
+		tttp = new TicTacToePanel();
 		InitialPanel mp = new InitialPanel(this, width, height);
+		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(tp, BorderLayout.NORTH);
@@ -57,6 +62,7 @@ public class GolfFrame extends JFrame {
 		cards.setLayout(new CardLayout());
 		cards.add(mp, "MenuPanel");
 		cards.add(mainPanel, "MainPanel");
+		cards.add(tttp, "TicTacToePanel");
 		
 		add(cards);
 	}
@@ -82,8 +88,6 @@ public class GolfFrame extends JFrame {
 			mainPanel.add(tp, BorderLayout.NORTH);
 			mainPanel.add(btp, BorderLayout.CENTER);
 			cards.add(mainPanel, "MainPanel");
-			c.show(cards, sceneName);
-		} else if(sceneName.equals("MainPanelLoad")){
 			c.show(cards, sceneName);
 		} else {
 			c.show(cards, sceneName);

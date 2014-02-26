@@ -50,7 +50,7 @@ public class GolfFrame extends JFrame {
 		
 		btp = new TablePanel();
 		tp = new TopPanel(btp, this);
-		tttp = new TicTacToePanel();
+		tttp = new TicTacToePanel(this);
 		InitialPanel mp = new InitialPanel(this, width, height);
 		
 		mainPanel = new JPanel();

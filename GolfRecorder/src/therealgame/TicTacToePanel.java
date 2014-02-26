@@ -1,5 +1,7 @@
 package therealgame;
 
+import gui.GolfFrame;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,12 +15,25 @@ public class TicTacToePanel extends JPanel {
 
 	private JButton[][] buttons;
 	private int[][] logicBoard;
+	
 	private boolean turn;
+	private int drawCounter;
+	
+	private GolfFrame gf;
 
-	public TicTacToePanel() {
+	public TicTacToePanel(GolfFrame gf) {
 		setBackground(Color.black);
 		setLayout(new GridLayout(3, 3, 3, 3));
 
+		initialize();
+
+		this.gf = gf;
+	}
+
+	/**
+	 * Initializes the board.
+	 */
+	private void initialize() {
 		// Init arrays
 		buttons = new JButton[3][3];
 		logicBoard = new int[3][3];
@@ -34,6 +49,24 @@ public class TicTacToePanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Resets the board.
+	 */
+	private void reset() {
+		// TODO Auto-generated method stub
+		for(int r = 0; r < 3; r++) {
+			for(int c = 0; c < 3; c++) {
+				this.remove(buttons[c][r]);
+			}
+		}
+		turn = false;
+		drawCounter = 0;
+		initialize();
+	}
+
+	/**
+	 * Checks for a win condition.
+	 */
 	public void checkWin() {
 		// TODO Auto-generated method stub
 		// Vertical and Horizontal
@@ -62,12 +95,18 @@ public class TicTacToePanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Launches the JOptionPane with winner, then returns to the menu. 
+	 */
 	public void launchFinish() {
 		// TODO Auto-generated method stub
 		if(turn)
 			JOptionPane.showMessageDialog(null, "X wins!", "Win!", JOptionPane.INFORMATION_MESSAGE);
 		else
 			JOptionPane.showMessageDialog(null, "O wins!", "Win!", JOptionPane.INFORMATION_MESSAGE);
+
+		reset();
+		gf.changeScene("MenuPanel");
 	}
 
 	private class ButtonListener implements ActionListener {
@@ -95,6 +134,15 @@ public class TicTacToePanel extends JPanel {
 			}
 			source.setEnabled(false);
 			checkWin();
+			
+			// Checks for draw
+			drawCounter++;
+			if (drawCounter == 9) {
+				JOptionPane.showMessageDialog(null, "Draw!", "Draw", JOptionPane.INFORMATION_MESSAGE);
+
+				reset();
+				gf.changeScene("MenuPanel");
+			}
 		}
 	}
 }

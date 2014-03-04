@@ -2,6 +2,10 @@ import gui.GolfFrame;
 
 import javax.swing.JFrame;
 
+/**
+ * Commit test by Edwardsdff
+ */
+
 public class GolfRecorder {
 
 	/**

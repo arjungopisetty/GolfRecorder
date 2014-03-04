@@ -3,7 +3,7 @@ import gui.GolfFrame;
 import javax.swing.JFrame;
 
 /**
- * Commit test by Edwardsdff
+ * Commit test by Edward Kim + Arjun Gopisetty + Public CSV Files
  */
 
 public class GolfRecorder {

@@ -1,8 +1,6 @@
 GolfRecorder
 ============
 
-Arjun Gopisetty, Edward Kim, and Chris Hsiao
-
 ## Introduction  
 
 This program records various statistics of golfers. This program was designed for the golf coach at Homestead High School, Gary Yoshida. This program provides a user-friendly GUI to input, change, and store data about a set of golfers. This program also saves the data entered in another file.
@@ -19,6 +17,11 @@ This program offers a convenient way to save data about specific players or spec
 
 The program will be user friendly and not require much instruction. However, the basics are to use the table to enter and edit scores for multiple golfers, and receive the round indices and final average index for each player. There are buttons for entering new courses, adding new players and rounds to the table, and the save button. To open a previously saved table, navigate to the save file in the project directory and select it. 
 
+## Collaborators 
+
+Edward Kim: https://github.com/jimmy04500
+
+Chris Hsiao
 
 ## Responsibility List: 	
 

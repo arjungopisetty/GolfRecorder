@@ -13,11 +13,13 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.PrinterException;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class TopPanel extends JPanel {
 
@@ -26,8 +28,8 @@ public class TopPanel extends JPanel {
 	private JButton back, save, saveAs, nRow, nCol;
 	private JButton newCourse;
 	private JButton calcRoundIndex;
-	private JButton print;
 	private JPanel buttonPanel, coursePanel;
+	private JFileChooser fileBrowser;
 
 	private TablePanel tp;
 	private GolfFrame gf;
@@ -63,9 +65,14 @@ public class TopPanel extends JPanel {
 		nCol = new JButton("New Game");
 		nCol.setActionCommand("new game");
 		nCol.addActionListener(bh);
+		
+		fileBrowser = new JFileChooser();
+		fileBrowser.setDialogTitle("Choose Save Directory");
+		fileBrowser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		buttonPanel.add(back, BorderLayout.WEST);
 		buttonPanel.add(save, BorderLayout.CENTER);
+		buttonPanel.add(saveAs);
 		buttonPanel.add(nRow, BorderLayout.EAST);
 		buttonPanel.add(nCol);
 		add(buttonPanel);
@@ -77,13 +84,8 @@ public class TopPanel extends JPanel {
 		calcRoundIndex = new JButton("Calculate Round Index");
 		calcRoundIndex.setActionCommand("calcroundindex");
 		calcRoundIndex.addActionListener(bh);
-		print = new JButton("Print table");
-		print.addActionListener(new ButtonHandler());
-		print.setActionCommand("print");
-		
 		coursePanel.add(newCourse);
 		coursePanel.add(calcRoundIndex);
-		coursePanel.add(print);
 		add(coursePanel);
 	}
 
@@ -93,16 +95,59 @@ public class TopPanel extends JPanel {
 	class ButtonHandler implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals("save")) {			
-				String fileName = JOptionPane.showInputDialog("Enter File Name: ");
-				if(fileName == null || fileName.equals("")){
-					JOptionPane.showMessageDialog(null, "Empty filename! " + fileName, "Notice!", JOptionPane.WARNING_MESSAGE);
-				}else {
+			if (e.getActionCommand().equals("save")) {
+				if(tp.isInitializedFromFile()){
+					String fileName = gf.getFileName();
 					FileIO.savePlayers(fileName, tp.dumpData());
 					FileIO.saveCourses(tp.getCourses());
 					tp.setSave(true);
+					JOptionPane.showMessageDialog(null,"Save Successful!");
+				}else{
+					File f = new File("C:/");
+					fileBrowser.setCurrentDirectory(f);
+					File namePath = null;
+					int check;
+					check = fileBrowser.showSaveDialog(null);
+					if(check == JFileChooser.APPROVE_OPTION){
+						namePath = fileBrowser.getSelectedFile();
+						String fileName = JOptionPane.showInputDialog(null, "Enter File Name:",
+								"", JOptionPane.INFORMATION_MESSAGE);
+						if(fileName == null || fileName.equals("")){
+							JOptionPane.showMessageDialog(null, "Invalid filename! Please try again.",
+									"Notice!", JOptionPane.WARNING_MESSAGE);
+						}else{
+							FileIO.savePlayers(namePath.getPath() + "/" + fileName, tp.dumpData());
+							FileIO.saveCourses(tp.getCourses());
+							tp.setSave(true);
+							JOptionPane.showMessageDialog(null,"Save Successful!");
+							gf.setFileName(namePath.getPath() + "/" + fileName);
+						}
+					}
+					tp.setInitializedFromFile(true);
 				}
-			} else if (e.getActionCommand().equals("new player")) {
+			} else if(e.getActionCommand().equals("save as")){
+				File f = new File("C:/");
+				fileBrowser.setCurrentDirectory(f);
+				File namePath = null;
+				int check;
+				check = fileBrowser.showSaveDialog(null);
+				if(check == JFileChooser.APPROVE_OPTION){
+					namePath = fileBrowser.getSelectedFile();
+					String fileName = JOptionPane.showInputDialog(null, "Enter File Name:",
+							"", JOptionPane.INFORMATION_MESSAGE);
+					if(fileName == null || fileName.equals("")){
+						JOptionPane.showMessageDialog(null, "Empty filename! " + fileName,
+								"Notice!", JOptionPane.WARNING_MESSAGE);
+					}else{
+						FileIO.savePlayers(namePath.getPath() + "/" + fileName, tp.dumpData());
+						FileIO.saveCourses(tp.getCourses());
+						tp.setSave(true);
+						JOptionPane.showMessageDialog(null,"Save Successful!");
+						gf.setFileName(namePath.getPath() + "/" + fileName);
+					}
+				}
+				tp.setInitializedFromFile(true);
+			}else if (e.getActionCommand().equals("new player")) {
 				String name = JOptionPane.showInputDialog("Enter name of player:");
 				if(name != null && !name.equals(""))
 					tp.addRow(name);
@@ -126,13 +171,6 @@ public class TopPanel extends JPanel {
 			} else if (e.getActionCommand().equals("calcroundindex")) {
 				tp.updateRoundIndex();
 				tp.updateFinalAverage();
-			} else if(e.getActionCommand().equals("print")) {
-				try {
-					tp.getTable().print();
-				} catch (PrinterException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		}
 	}

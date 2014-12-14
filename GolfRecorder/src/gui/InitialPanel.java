@@ -108,6 +108,7 @@ public class InitialPanel extends JPanel {
 				check = fileBrowser.showOpenDialog(null);
 				if(check == JFileChooser.APPROVE_OPTION){
 					namePath = fileBrowser.getSelectedFile();
+					System.out.println(namePath.getPath());
 				} else {
 					JOptionPane.showMessageDialog(null, "No file was selected.",
 												"Notice!", JOptionPane.WARNING_MESSAGE);

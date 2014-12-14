@@ -22,6 +22,7 @@ public class GolfFrame extends JFrame {
 	private JPanel mainPanel;
 	private TablePanel btp;
 	private TopPanel tp;
+	private String fileName;
 	
 	/**
 	 * Constructs a default GolfFrame.
@@ -47,6 +48,7 @@ public class GolfFrame extends JFrame {
 		
 		btp = new TablePanel();
 		tp = new TopPanel(btp, this);
+		fileName = "";
 		InitialPanel mp = new InitialPanel(this, width, height);
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -110,5 +112,22 @@ public class GolfFrame extends JFrame {
 		mainPanel.add(btp, BorderLayout.CENTER);
 		cards.add(mainPanel, "MainPanel");
 		c.show(cards, "MainPanel");
+		setFileName(fileName);
+	}
+	
+	/**
+	 * 
+	 * @return the file path, if any.
+	 */
+	public String getFileName(){
+		return fileName;
+	}
+	
+	/**
+	 * Sets fileName to path
+	 * @param path
+	 */
+	public void setFileName(String path){
+		fileName = path;
 	}
 }

@@ -36,7 +36,7 @@ public class TablePanel extends JPanel {
 	private DefaultTableModel dataTableModel;
 	private JComboBox[] courseSelector;
 
-	private boolean saved;
+	private boolean saved, initializedFromFile;
 	private int numGames;
 
 	/**
@@ -54,6 +54,8 @@ public class TablePanel extends JPanel {
 				{70.4, 121, "Sunnyvale Muni"},
 				{59.0, 96, "Deepcliff"}
 		});
+		saved = false;
+		initializedFromFile = false;
 	}
 
 	/**
@@ -64,7 +66,8 @@ public class TablePanel extends JPanel {
 	 */
 	public TablePanel(Object[][] data, Object[][] courses) {
 		setLayout(new BorderLayout());
-		saved = false;
+		saved = true;
+		initializedFromFile = true;
 
 		Course.courses.clear();
 		// Initialize data and model
@@ -147,12 +150,6 @@ public class TablePanel extends JPanel {
 	            tableColumn.setPreferredWidth(Math.max(Math.max(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()), dataSize), colSize));
 	            return  component;
 	         }
-			
-			public String paramString() {
-				String s = super.paramString();
-				System.out.println(s);
-				return s;
-			}
 		};
 		dataTable.setCellSelectionEnabled(true);
 		dataTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -202,6 +199,7 @@ public class TablePanel extends JPanel {
 	 */
 	public void addRow(Object ... a) {
 		dataTableModel.addRow(a);
+		setSave(false);
 	}
 	
 	/**
@@ -215,6 +213,7 @@ public class TablePanel extends JPanel {
 		dataTableModel.addColumn("Final Average");
 		dataTable.getColumnModel().getColumn(0).setPreferredWidth(140);
 		numGames++;
+		setSave(false);
 	}
 	
 	private String[] getRemainingIdentifiers(int columnIndex) {
@@ -253,7 +252,7 @@ public class TablePanel extends JPanel {
 
 	    dataTableModel = new DefaultTableModel(data, getRemainingIdentifiers(columnIndex));
 	    dataTable.setModel(dataTableModel);
-
+	    setSave(false);
 	}
 	
 	/**
@@ -272,6 +271,7 @@ public class TablePanel extends JPanel {
 	 */
 	public void incrementGameNumber() {
 		numGames++;
+		setSave(false);
 	}
 
 	/**
@@ -303,12 +303,19 @@ public class TablePanel extends JPanel {
 	}
 
 	/**
-	 * Sets the save boolean.
-	 * 
+	 * Sets the save field.
 	 * @param s boolean to set save as.
 	 */
 	public void setSave(boolean s) {
 		saved = s;
+	}
+	
+	/**
+	 * Sets the InitializedFromFile field.
+	 * @param s
+	 */
+	public void setInitializedFromFile(boolean s){
+		initializedFromFile = s;
 	}
 
 	/**
@@ -326,6 +333,13 @@ public class TablePanel extends JPanel {
 	}
 	
 	/**
+	 * @return whether or not this table was initialized from a file.
+	 */
+	public boolean isInitializedFromFile(){
+		return initializedFromFile;
+	}
+	
+	/**
 	 * Adds a new course to the list.
 	 * 
 	 * @param c - Course to add.
@@ -340,6 +354,7 @@ public class TablePanel extends JPanel {
 				}
 			}
 		}
+		setSave(false);
 	}
 
 	/**
@@ -364,6 +379,7 @@ public class TablePanel extends JPanel {
 				}
 			}
 		}
+		setSave(false);
 	}
 	
 	/**
@@ -386,9 +402,6 @@ public class TablePanel extends JPanel {
 			average = (double)Math.round(average * 100) / 100;
 			dataTableModel.setValueAt(average, r, dataTableModel.getColumnCount() - 1);
 		}
-	}
-	
-	public JTable getTable() {
-		return dataTable;
+		setSave(false);
 	}
 }

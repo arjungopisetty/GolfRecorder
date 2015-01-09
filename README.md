@@ -19,9 +19,8 @@ The program will be user friendly and not require much instruction. However, the
 
 ## Collaborators 
 
-Edward Kim: https://github.com/jimmy04500
-
-Chris Hsiao
+[Edward Kim](https://github.com/jimmy04500)
+[Chris Hsiao](https://github.com/chsiao999)
 
 ## Responsibility List: 	
 
